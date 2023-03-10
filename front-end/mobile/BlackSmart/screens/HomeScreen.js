@@ -115,7 +115,7 @@ export default function HomeScreen() {
 
     // do a setInterval here
     setInterval(() => {
-      console.log('.');
+      // console.log('.');
       geocodeLocation();
     }, 2000);
 
