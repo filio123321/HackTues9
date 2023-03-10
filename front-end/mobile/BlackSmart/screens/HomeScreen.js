@@ -186,3 +186,12 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 });
+
+
+
+
+
+
+// settings
+// // za vseki senzor ili za celiq device vkluch izkluch
+
