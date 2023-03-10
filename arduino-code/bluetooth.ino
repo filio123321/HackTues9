@@ -3,8 +3,6 @@
 BLEService ledService("19B10000-E8F2-537E-4F6C-D104768A1214");
 
 void btSetup() {
-  Serial.begin(9600);
-
   if (!BLE.begin()) {
     Serial.println("starting BLE failed!");
     while (1);
