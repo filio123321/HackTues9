@@ -5,12 +5,42 @@ import { auth } from "./firebase";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import HaveIBeenPwned from "./screens/HaveIBeenPwned";
+import HistoryLogLocation from "./screens/HistoryLogLocation";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import { BleManager } from 'react-native-ble-plx';
+import { useState, useEffect } from 'react';
 
 
 export default function App() {
   const Drawer = createDrawerNavigator();
+  // const [bluetoothPermission, setBluetoothPermission] = useState(null);
+
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Permissions.
+  //     setBluetoothPermission(status === 'granted');
+  //   })();
+  // }, []);
+
+
+
+  // useEffect(() => {
+  //   // scan for bluetooth devices and console.log their device ids
+  //   const manager = new BleManager();
+  //   manager.startDeviceScan(null, null, (error, device) => {
+  //     if (error) {
+  //       console.error(error);
+  //       return;
+  //     }
+  //     console.log(device.id);
+  //   }
+  //   );
+
+  // }, []);
+
+
 
   return (
     <NavigationContainer>
@@ -23,8 +53,17 @@ export default function App() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Login" component={LoginScreen} />
+      <Drawer.Screen 
+        name="Login" 
+        component={LoginScreen} 
+        options={{
+          // hide Whole drawer navigation bar
+          headerShown: false
+        
+          }}/>
       <Drawer.Screen name="Have I Been Pwned" component={HaveIBeenPwned} />
+      {/* HistoryLogLocation.js */}
+      <Drawer.Screen name="History Log Location" component={HistoryLogLocation} />
     </Drawer.Navigator>
   </NavigationContainer>
   );
@@ -75,7 +114,9 @@ function CustomDrawerContent(props) {
             <Text style={styles.drawerItem}>Home</Text>
           </TouchableOpacity>
 
-          
+          <TouchableOpacity onPress={() => navigation.navigate("History Log Location")}>
+            <Text style={styles.drawerItem}>History Log Location</Text>
+          </TouchableOpacity>
 
 
           <View style={styles.drawerItemWrapper}>
@@ -83,6 +124,8 @@ function CustomDrawerContent(props) {
               <Text style={styles.drawerItem}>Have I Been Pwned</Text>
             </TouchableOpacity>
           </View>
+
+          
 
         
 
@@ -121,8 +164,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     // add a shadow to the drawer
-    shadowColor: "#000",
-    shadowOpacity: 0.5,
+    
   },
   drawerItem: {
     color: "black",
