@@ -5,12 +5,15 @@ import Constants from "expo-constants";
 import * as Location from "expo-location";
 import { auth, database } from "../firebase";
 
-export default function HomeScreen() {
+export default function HomeScreen ({ route }) {
+  const { coords } = route.params;
   const waypointIcon = require("./../assets/bag.png");
 
   const [waypoint, setWaypoint] = useState({ latitude: 0, longitude: 0 });
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const [foundRegion, setFoundRegion] = useState(false);
 
   // do an async function to get the location
   const getLoc = async () => {
@@ -22,9 +25,11 @@ export default function HomeScreen() {
 
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location);
+    // console.log('Golqm Kur');
+    // console.log(location.coords.latitude);
+    // console.log(location.coords.longitude);
+    // console.log('Golqm Kur');
   };
-
-
 
 
 
@@ -34,6 +39,21 @@ export default function HomeScreen() {
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   });
+
+
+  useEffect(() => {
+    if ( coords.latitude !== 0 && coords.longitude !== 0) {
+      setRegion({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+      setFoundRegion(true);
+    }
+  }, [coords]);
+
+
 
   // useEffect(() => {
   //   getLoc();
@@ -97,6 +117,11 @@ export default function HomeScreen() {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       });
+
+      console.log(region);
+
+      setFoundRegion(true);
+
     })();
   }, []);
 
@@ -109,7 +134,24 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView
+      {/* <MapView
+        style={styles.map}
+        initialRegion={region}
+        showsUserLocation={true}
+        loadingEnabled={true}
+      >
+        <Marker
+          coordinate={{
+            latitude: waypoint.latitude,
+            longitude: waypoint.longitude,
+          }}
+          title="My Bag"
+          image={waypointIcon}
+        />
+      </MapView> */}
+      {/* if foundRegion is true, show thing above, else loading screen */}
+      {foundRegion ? (
+        <MapView
         style={styles.map}
         initialRegion={region}
         showsUserLocation={true}
@@ -124,6 +166,10 @@ export default function HomeScreen() {
           image={waypointIcon}
         />
       </MapView>
+      ) : (
+        <Text>Loading...</Text>
+      )}
+
     </View>
   );
 }

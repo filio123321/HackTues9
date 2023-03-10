@@ -10,35 +10,36 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { BleManager } from 'react-native-ble-plx';
 import { useState, useEffect } from 'react';
+import * as Location from "expo-location";
+
 
 
 export default function App() {
   const Drawer = createDrawerNavigator();
+  
+  const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   // const [bluetoothPermission, setBluetoothPermission] = useState(null);
 
+  const getCoords = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { status } = await Permissions.
-  //     setBluetoothPermission(status === 'granted');
-  //   })();
-  // }, []);
+    let location = await Location.getCurrentPositionAsync({});
+    return [location.coords.latitude, location.coords.longitude];
+  }
 
+  useEffect(() => {
+    getCoords().then((coords) => {
+      setCoords({
+        latitude: coords[0],
+        longitude: coords[1],
+      });
+    });
+  }, []);
 
-
-  // useEffect(() => {
-  //   // scan for bluetooth devices and console.log their device ids
-  //   const manager = new BleManager();
-  //   manager.startDeviceScan(null, null, (error, device) => {
-  //     if (error) {
-  //       console.error(error);
-  //       return;
-  //     }
-  //     console.log(device.id);
-  //   }
-  //   );
-
-  // }, []);
 
 
 
@@ -110,7 +111,7 @@ function CustomDrawerContent(props) {
       <View style={styles.drawer}>
         <View style={{ flex: 1 }}>
           
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", coords)}>
             <Text style={styles.drawerItem}>Home</Text>
           </TouchableOpacity>
 

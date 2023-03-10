@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   TouchableOpacity,
@@ -8,6 +8,9 @@ import {
   View,
 } from "react-native";
 import { auth } from "../firebase";
+import * as Location from "expo-location";
+
+
 
 function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -15,13 +18,51 @@ function LoginScreen() {
 
   const navigation = useNavigation();
 
+  const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
+  // const [bluetoothPermission, setBluetoothPermission] = useState(null);
+
+  const getCoords = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    // console.log("coords: ", location.coords.latitude, location.coords.longitude);
+    
+    setCoords({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    return [location.coords.latitude, location.coords.longitude];
+  }
+
+  useEffect(() => {
+    getCoords()
+    .then((coords) => {
+      console.log("coords: ", coords);
+    });
+    // .then((coords) => {
+    //   console.log(coords);
+    // });
+
+  }, []);
+
+
+
+
   const LoginHandler = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setEmail(user.email);
-        navigation.navigate("Home");
+        console.log('passed coords: ', coords);
+        // navigation.navigate("Home");
+        // pass coords to HomeScreen
+        navigation.navigate("Home", { coords: coords });
 
       })
       .catch((error) => {
