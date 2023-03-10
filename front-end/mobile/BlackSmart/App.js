@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "./firebase";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
+import Settings from "./screens/Settings";
 import HaveIBeenPwned from "./screens/HaveIBeenPwned";
 import HistoryLogLocation from "./screens/HistoryLogLocation";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -14,33 +15,9 @@ import * as Location from "expo-location";
 
 
 
+
 export default function App() {
   const Drawer = createDrawerNavigator();
-  
-  const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
-  // const [bluetoothPermission, setBluetoothPermission] = useState(null);
-
-  const getCoords = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    return [location.coords.latitude, location.coords.longitude];
-  }
-
-  useEffect(() => {
-    getCoords().then((coords) => {
-      setCoords({
-        latitude: coords[0],
-        longitude: coords[1],
-      });
-    });
-  }, []);
-
-
 
 
   return (
@@ -62,9 +39,10 @@ export default function App() {
           headerShown: false
         
           }}/>
-      <Drawer.Screen name="Have I Been Pwned" component={HaveIBeenPwned} />
+      <Drawer.Screen name="Settings" component={Settings} />
+      {/* <Drawer.Screen name="Have I Been Pwned" component={HaveIBeenPwned} /> */}
       {/* HistoryLogLocation.js */}
-      <Drawer.Screen name="History Log Location" component={HistoryLogLocation} />
+      {/* <Drawer.Screen name="History Log Location" component={HistoryLogLocation} /> */}
     </Drawer.Navigator>
   </NavigationContainer>
   );
@@ -72,6 +50,37 @@ export default function App() {
 
 function CustomDrawerContent(props) {
   const navigation = useNavigation();
+  const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
+  // const [bluetoothPermission, setBluetoothPermission] = useState(null);
+
+  const getCoords = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    // console.log("coords: ", location.coords.latitude, location.coords.longitude);
+    
+    setCoords({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    return [location.coords.latitude, location.coords.longitude];
+  }
+
+  useEffect(() => {
+    getCoords()
+    .then((coords) => {
+      console.log("coords: ", coords);
+    });
+    // .then((coords) => {
+    //   console.log(coords);
+    // });
+
+  }, []);
 
   const signoutHandler = () => {
     if (auth.currentUser) {
@@ -111,19 +120,19 @@ function CustomDrawerContent(props) {
       <View style={styles.drawer}>
         <View style={{ flex: 1 }}>
           
-          <TouchableOpacity onPress={() => navigation.navigate("Home", coords)}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", {coords: coords})}>
             <Text style={styles.drawerItem}>Home</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("History Log Location")}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("History Log Location")}>
             <Text style={styles.drawerItem}>History Log Location</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
 
           <View style={styles.drawerItemWrapper}>
-            <TouchableOpacity onPress={() => navigation.navigate("Have I Been Pwned")}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate("Have I Been Pwned")}>
               <Text style={styles.drawerItem}>Have I Been Pwned</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           
@@ -132,6 +141,9 @@ function CustomDrawerContent(props) {
 
         </View>
         
+        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+          <Text style={styles.drawerItem}>Settings</Text>
+        </TouchableOpacity>
 
         {/* Add a separate wrapper for the Login/Signout button */}
         <View style={styles.bottomButtonWrapper}>
