@@ -13,17 +13,18 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Login"
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        // drawerStyle={{
-        //   display: useNavigation().getState().index === 0 ? 'none' : 'flex'
-        // }}
-      >
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Login" component={LoginScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Drawer.Navigator
+      initialRouteName="Login"
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerStyle={{
+        // display: useNavigation().getState().routeNames.includes('Login') ? 'flex' : 'flex',
+        // height: 10// set the height of the drawer as required
+      }}
+    >
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Login" component={LoginScreen} />
+    </Drawer.Navigator>
+  </NavigationContainer>
   );
 }
 
@@ -46,16 +47,63 @@ function CustomDrawerContent(props) {
   return (
     <View style={styles.drawer}>
       
-      <TouchableOpacity onPress={signoutHandler}>
+      {/* <TouchableOpacity onPress={signoutHandler}>
         <Text style={styles.drawerItem}>Sign out</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      {/* add Login if user is not logged in in the bottom, if he is logged in make that Sign out */}
+
+
+
+      {/* {auth.currentUser ? (
+        <TouchableOpacity onPress={signoutHandler}>
+          <Text style={styles.drawerItem}>Sign out</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.drawerItem}>Login</Text>
+        </TouchableOpacity>
+      )} */}
+
+      {/* add a wrapper for the login/signout button */}
+      <View style={styles.drawer}>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Text style={styles.drawerItem}>Home</Text>
+          </TouchableOpacity>
+
+          {/* Add a separate wrapper for the pages */}
+          <View style={styles.drawerItemWrapper}>
+            {/* Add your other pages here */}
+          </View>
+        </View>
+
+        {/* Add a separate wrapper for the Login/Signout button */}
+        <View style={styles.bottomButtonWrapper}>
+          {auth.currentUser ? (
+            <TouchableOpacity onPress={signoutHandler}>
+              <Text style={styles.drawerItem}>Sign out</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={styles.drawerItem}>Login</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
+
+
+
+
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   drawer: {
-    backgroundColor: "#FFE5B4",
+    backgroundColor: "#fff",
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 20,
@@ -63,9 +111,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   drawerItem: {
-    color: "#fff",
+    color: "black",
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  drawerItemWrapper: {
+    flex: 1,
+  },
+  // add a wrapper for the login/signout button
+  bottomButtonWrapper: {
+    paddingBottom: 20,
   },
 });

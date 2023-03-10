@@ -19,10 +19,8 @@ function LoginScreen() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        console.log('bshauidhlasihdla');
         const user = userCredential.user;
         setEmail(user.email);
-        console.log('eeeeeeeeee');
         navigation.navigate("Home");
 
       })
@@ -34,7 +32,7 @@ function LoginScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Login</Text>
+        {/* <Text style={styles.headerText}>Login</Text> */}
       </View>
       <TextInput
         style={styles.textInput}
