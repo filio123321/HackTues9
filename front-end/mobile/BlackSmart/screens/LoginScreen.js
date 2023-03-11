@@ -67,7 +67,7 @@ function LoginScreen() {
         {/* <Text style={styles.headerText}><Text style={{color: 'red'}}>Your</Text> way</Text>
         <Text style={styles.headerText}>To a <Text style={{color: 'red'}}>secure</Text></Text>
         <Text style={[styles.headerText, {color: 'blue'}]}>Backpack</Text> */}
-        <Text style={styles.headerText}>Pack<Text style={{color: '#0D98BA'}}>Smart</Text></Text>
+        <Text style={styles.headerText}>Pack<Text style={{color: '#0D98BA'}}>Safe</Text></Text>
       </View>
 
       <TextInput
