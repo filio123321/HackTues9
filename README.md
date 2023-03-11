@@ -17,6 +17,8 @@ PackSafe представлява устройство, което следи з
 ```npm install```<br/>
 ```npx expo start```<br/>
 2) Embedded<br/>
+![scheme](image.png)
+
     
 
 
