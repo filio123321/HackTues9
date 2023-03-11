@@ -1,6 +1,6 @@
 # MarsIT
 
-![PackSafe](ihttps://media.discordapp.net/attachments/758382430137876480/1083959429059317870/image.png?width=556&height=556)
+![PackSafe](https://media.discordapp.net/attachments/758382430137876480/1083959429059317870/image.png?width=556&height=556)
 
 PackSafe представлява устройство, което следи за кражба на чанти/вещите в тях, с аларма и мобилно приложение с GPS проследяване.
 
