@@ -162,7 +162,7 @@ export default function HomeScreen ({ route }) {
             latitude: waypoint.latitude,
             longitude: waypoint.longitude,
           }}
-          title="My Bag"
+          title="Last Checkpoint"
           image={waypointIcon}
         />
       </MapView>
