@@ -1,6 +1,5 @@
 # MarsIT
 <p align="center">
-    ![PackSafe]()
     <img src="https://media.discordapp.net/attachments/758382430137876480/1083959429059317870/image.png?width=556&height=556"/>
 </p>
 
