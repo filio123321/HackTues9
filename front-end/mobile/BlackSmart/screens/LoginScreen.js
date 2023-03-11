@@ -9,17 +9,13 @@ import {
 } from "react-native";
 import { auth } from "../firebase";
 import * as Location from "expo-location";
-
-
+// import MovingGradientButton from "../components/MovingGradientButton";
 
 function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigation = useNavigation();
-
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
-  // const [bluetoothPermission, setBluetoothPermission] = useState(null);
 
   const getCoords = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -29,7 +25,6 @@ function LoginScreen() {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    // console.log("coords: ", location.coords.latitude, location.coords.longitude);
     
     setCoords({
       latitude: location.coords.latitude,
@@ -44,14 +39,11 @@ function LoginScreen() {
     .then((coords) => {
       console.log("coords: ", coords);
     });
-    // .then((coords) => {
-    //   console.log(coords);
-    // });
-
   }, []);
 
-
-
+  const handlePress = () => {
+    console.log('Button pressed!');
+  };
 
   const LoginHandler = () => {
     auth
@@ -60,10 +52,7 @@ function LoginScreen() {
         const user = userCredential.user;
         setEmail(user.email);
         console.log('passed coords: ', coords);
-        // navigation.navigate("Home");
-        // pass coords to HomeScreen
         navigation.navigate("Home", { coords: coords });
-
       })
       .catch((error) => {
         alert(error.message + ": " + error.code);
@@ -72,9 +61,15 @@ function LoginScreen() {
 
   return (
     <View style={styles.container}>
+
+
       <View style={styles.header}>
-        {/* <Text style={styles.headerText}>Login</Text> */}
+        {/* <Text style={styles.headerText}><Text style={{color: 'red'}}>Your</Text> way</Text>
+        <Text style={styles.headerText}>To a <Text style={{color: 'red'}}>secure</Text></Text>
+        <Text style={[styles.headerText, {color: 'blue'}]}>Backpack</Text> */}
+        <Text style={styles.headerText}>Pack<Text style={{color: '#0D98BA'}}>Smart</Text></Text>
       </View>
+
       <TextInput
         style={styles.textInput}
         placeholder="Email"
@@ -95,6 +90,7 @@ function LoginScreen() {
       <TouchableOpacity style={styles.loginButton} onPress={LoginHandler}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
+
     </View>
   );
 }
@@ -108,7 +104,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
   },
-
   textInput: {
     borderWidth: 1,
     borderColor: "#B8B8B8",
@@ -121,12 +116,22 @@ const styles = StyleSheet.create({
     height: 50,
   },
   header: {
+    marginTop: "10%",
+    marginLeft: "5%",
     marginBottom: "10%",
-    alignItems: "center",
+    // alignItems: "center",
   },
   headerText: {
-    fontSize: 32,
+    fontSize: 45,
     color: "#1E1E1E",
+    fontWeight: "bold",
+  },
+  headerTextRed: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  headerTextBackpack: {
+    color: "#9b59b6",
     fontWeight: "bold",
   },
   loginButton: {
