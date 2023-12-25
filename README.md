@@ -33,7 +33,7 @@ PackSafe представлява устройство, което следи з
 
 * **Филостратос Титопулос**(https://github.com/filio123321)
     * Software
-* **Огнян Разсадов**(https://github.com/Footanari)
+* **Огнян Разсадов**(https://github.com/j7zd)
     * Software
 * **Егени Попов**(https://github.com/nesumtepital)
     * Hardware
